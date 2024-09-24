@@ -64,6 +64,8 @@ public class CrudController {
 		logger.info("employees controller started ----");
 		
 		List<Employee> response = empService.getAllEmployees();
+
+		logger.info("Records fetched successfully");
 		
 		return ResponseEntity.ok(response);
 	}
@@ -105,5 +107,10 @@ public class CrudController {
 		} else {
 			return ResponseEntity.notFound().build();
 		}
+	}
+
+	@GetMapping("/test")
+	public String test(){
+		return "This is Crud project";
 	}
 }
