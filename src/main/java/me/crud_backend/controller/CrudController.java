@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequestMapping("/crud-emp")
 @CrossOrigin("http://localhost:3000")
+@SuppressWarnings("unused")
 public class CrudController {
 	
 	@Autowired
@@ -51,8 +52,8 @@ public class CrudController {
 		logger.info("get Employee by Id controller started ---- ");
 		
 		Employee response = empService.getEmployee(id);
-		
-		logger.info("Record fetched successfully ::: " + response);
+
+        logger.info("Record fetched successfully ::: {}", response);
 		
 		return ResponseEntity.status(HttpStatus.FOUND).body(response);
 	}
@@ -95,7 +96,7 @@ public class CrudController {
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employee){
 		
-		logger.info("update employee controller started ------ ");
+		logger.info("update employee controller started ------   ");
 		
 		Employee response = empService.updateEmployee(id, employee);
 		
