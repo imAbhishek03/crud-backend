@@ -2,6 +2,7 @@ package me.crud_backend.controller;
 
 import java.util.List;
 
+import me.crud_backend.dto.EmployeeDetailsDTO;
 import me.crud_backend.pojo.Employee;
 import me.crud_backend.service.EmployeeService;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/crud-emp")
+@RequestMapping("/api/emp")
 @CrossOrigin("http://localhost:3000")
 @SuppressWarnings("unused")
 public class CrudController {
@@ -34,42 +35,54 @@ public class CrudController {
     private static final Logger logger = LoggerFactory.getLogger(CrudController.class);
 	
 	@PostMapping("/add")
-	public ResponseEntity<Employee> addEmployee(@RequestBody Employee request) {
+	public ResponseEntity<String> addEmployee(@RequestBody EmployeeDetailsDTO request) {
 		
 		logger.info("add employee controller started ------- ");
-		
-		Employee response = empService.addEmployee(request);
-		System.out.println("Employee details ::::: " + response);
-		
-		logger.info("Record saved successfully!!!");
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
-	}
-	
-	@GetMapping("/get/{id}")
-	public ResponseEntity<Employee> getEmployee(@PathVariable Long id){
-		
-		logger.info("get Employee by Id controller started ---- ");
-		
-		Employee response = empService.getEmployee(id);
 
-        logger.info("Record fetched successfully ::: {}", response);
-		
-		return ResponseEntity.status(HttpStatus.FOUND).body(response);
+		boolean flg = empService.addEmployee(request);
+
+		if(flg){
+			logger.info("Record saved successfully!!!");
+
+			return ResponseEntity.status(HttpStatus.CREATED).body("Record Saved Successfully");
+		} else{
+			logger.error("Something went wrong");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+		}
 	}
-	
+
 	@GetMapping("/employees")
-	public ResponseEntity<List<Employee>> getEmployeeList(){
+	public ResponseEntity<List<EmployeeDetailsDTO>> getEmployeeList(){
 		
 		logger.info("employees controller started ----");
 		
-		List<Employee> response = empService.getAllEmployees();
+		List<EmployeeDetailsDTO> response = empService.getAllEmployees();
 
-		logger.info("Records fetched successfully");
-		
-		return ResponseEntity.ok(response);
+		if(response != null){
+			logger.info("Records fetched successfully");
+			return ResponseEntity.ok(response);
+		} else {
+			logger.error("Empty records");
+			return ResponseEntity.notFound().build();
+		}
+
+
 	}
-	
+
+	@GetMapping("/get/{id}")
+	public ResponseEntity<EmployeeDetailsDTO> getEmployee(@PathVariable Long id){
+
+		logger.info("get Employee by Id controller started ---- ");
+
+		EmployeeDetailsDTO response = empService.getEmployeeWithDepartment(id);
+
+		if(response != null){
+			logger.info("Record fetched successfully ::: {}", response);
+
+			return ResponseEntity.status(HttpStatus.FOUND).body(response);
+		} else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+
 	@GetMapping("/getByEmpId/{empId}")
 	public ResponseEntity<Employee> getEmployeeByEmpId(@PathVariable String empId){
 		
@@ -88,7 +101,7 @@ public class CrudController {
 		
 		if(empService.deleteEmployee(id)) {
 			logger.info("Record deleted successfully!!!");
-			return ResponseEntity.status(HttpStatus.OK).body("Record deleted Successfully!!!");
+			return ResponseEntity.status(HttpStatus.OK).body("Employee Id : " + id +" deleted Successfully!!!");
 		} else {
 			logger.error("Something went wrong!!!");
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something went wrong!!!");
@@ -96,16 +109,16 @@ public class CrudController {
 	}
 	
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employee){
+	public ResponseEntity<String> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDetailsDTO employee){
 		
 		logger.info("update employee controller started ------   ");
 		
-		Employee response = empService.updateEmployee(id, employee);
+		boolean response = empService.updateEmployee(id, employee);
 		
-		if(response != null) {
-			return ResponseEntity.ok(response);
+		if(response) {
+			return ResponseEntity.status(HttpStatus.OK).body("Employee id: " + id + " updated successfully");
 		} else {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Record not found");
 		}
 	}
 
