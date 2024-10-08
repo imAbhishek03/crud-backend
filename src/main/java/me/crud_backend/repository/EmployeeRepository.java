@@ -24,15 +24,20 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     //fetching all employee record  with department name
 
-    @Query("SELECT new me.crud_backend.dto.EmployeeDetailsDTO(e.empId, e.name, e.email, e.phone, d.departmentName)" +
+    @Query("SELECT new me.crud_backend.dto.EmployeeDetailsDTO(e.id, e.empId, e.name, e.email, e.phone, d.departmentName)" +
             " FROM Employee e JOIN e.department d")
     List<EmployeeDetailsDTO> findAllEmployeeDetails();
 
     // fetching employee record with department name
 
-    @Query("SELECT new me.crud_backend.dto.EmployeeDetailsDTO(e.empId, e.name, e.email, e.phone, d.departmentName)" +
+    @Query("SELECT new me.crud_backend.dto.EmployeeDetailsDTO(e.id, e.empId, e.name, e.email, e.phone, d.departmentName)" +
             " FROM Employee e JOIN e.department d WHERE e.id = :id")
     EmployeeDetailsDTO findEmployeeWithDepartment(@Param("id") Long id);
+
+    @Query("SELECT new me.crud_backend.dto.EmployeeDetailsDTO(e.id, e.empId, e.name, e.email, e.phone, d.departmentName)" +
+            " FROM Employee e JOIN e.department d WHERE e.empId = :id")
+    EmployeeDetailsDTO findEmployeeWithDepartment2(@Param("id") String id);
+
 
     @Modifying
     @Transactional

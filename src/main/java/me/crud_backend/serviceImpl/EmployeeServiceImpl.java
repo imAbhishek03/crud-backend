@@ -12,7 +12,6 @@ import me.crud_backend.repository.DepartmentRepository;
 import me.crud_backend.repository.EmployeeRepository;
 import me.crud_backend.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,17 +29,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     public boolean addEmployee(EmployeeDetailsDTO employee) {
 
         try {
-            Optional<Department> tempDepartment = deptRepository.findByDepartmentName(employee.getDepartmentName());
+            Optional<Department> tempDepartment = deptRepository.findByDepartmentName(employee.getDepartment());
 
             if (tempDepartment.isPresent()) {
 
                 Department existingDepartment = tempDepartment.get();
 
                 Employee emp = new Employee();
-                emp.setEmpId(employee.getEmpId());
-                emp.setName(employee.getEmpName());
-                emp.setPhone(employee.getEmpPhone());
-                emp.setEmail(employee.getEmpEmail());
+                emp.setEmpId(employee.getEmpid());
+                emp.setName(employee.getName());
+                emp.setPhone(employee.getPhone());
+                emp.setEmail(employee.getEmail());
 
                 emp.setDepartment(existingDepartment);
 
@@ -64,7 +63,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDetailsDTO getEmployeeWithDepartment(Long id) {
         try {
             EmployeeDetailsDTO response = empRepository.findEmployeeWithDepartment(id);
-            System.out.println(response.getDepartmentName());
+            System.out.println(response.getDepartment());
             return response;
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,8 +82,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeByEmpId(String empId) {
-        return empRepository.findByEmpId(empId).orElse(null);
+    public EmployeeDetailsDTO getEmployeeByEmpId(String empid) {
+        try {
+            EmployeeDetailsDTO response = empRepository.findEmployeeWithDepartment2(empid);
+            System.out.println(response.getDepartment());
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
@@ -116,15 +122,15 @@ public class EmployeeServiceImpl implements EmployeeService {
             if (existingEmployee != null) {
                 System.out.println("record is present-----");
 
-                Optional<Department> tempDepartment = deptRepository.findByDepartmentName(request.getDepartmentName());
+                Optional<Department> tempDepartment = deptRepository.findByDepartmentName(request.getDepartment());
 
                 if (tempDepartment.isPresent()) {
                     Department department = tempDepartment.get();
 
-                    existingEmployee.setEmpId(request.getEmpId());
-                    existingEmployee.setName(request.getEmpName());
-                    existingEmployee.setEmail(request.getEmpEmail());
-                    existingEmployee.setPhone(request.getEmpPhone());
+                    existingEmployee.setEmpId(request.getEmpid());
+                    existingEmployee.setName(request.getName());
+                    existingEmployee.setEmail(request.getEmail());
+                    existingEmployee.setPhone(request.getPhone());
 
                     existingEmployee.setDepartment(department);
 

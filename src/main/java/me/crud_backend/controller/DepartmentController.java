@@ -1,5 +1,6 @@
 package me.crud_backend.controller;
 
+import me.crud_backend.dto.DepartmentDTO;
 import me.crud_backend.pojo.Department;
 import me.crud_backend.service.DepartmentService;
 import org.slf4j.Logger;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/department")
@@ -18,7 +21,7 @@ public class DepartmentController {
     @Autowired
     DepartmentService departmentService;
 
-    private static final Logger logger = LoggerFactory.getLogger(Department.class);
+    private static final Logger logger = LoggerFactory.getLogger(DepartmentController.class);
 
     @PostMapping("add")
     public ResponseEntity<String> addDepartment(@RequestBody Department request) {
@@ -36,5 +39,16 @@ public class DepartmentController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("getAll")
+    public List<DepartmentDTO> getDepartmentList(){
+        try{
+            logger.info("Department list controller started -----");
+            return departmentService.getDepartmentList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

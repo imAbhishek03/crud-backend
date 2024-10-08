@@ -9,10 +9,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmployeeDetailsDTO {
 
-    private String empId;
-    private String empName;
-    private String empEmail;
-    private long empPhone;
+    private Long id;
+    private String empid;
+    private String name;
+    private String email;
+    private long phone;
 
-    private String departmentName;
+    private String department;
+
+    public EmployeeDetailsDTO(String empid, String name, String email, long phone, String department) {
+        this.empid = empid;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.department = department;
+    }
 }

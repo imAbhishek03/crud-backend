@@ -12,7 +12,7 @@ public interface EmployeeService {
 
 	Employee getEmployee(Long id);
 
-	Employee getEmployeeByEmpId(String empId);
+	EmployeeDetailsDTO getEmployeeByEmpId(String empId);
 
 	EmployeeDetailsDTO getEmployeeWithDepartment(Long id);
 

@@ -38,6 +38,7 @@ public class CrudController {
 	public ResponseEntity<String> addEmployee(@RequestBody EmployeeDetailsDTO request) {
 		
 		logger.info("add employee controller started ------- ");
+		System.out.println(request);
 
 		boolean flg = empService.addEmployee(request);
 
@@ -79,20 +80,20 @@ public class CrudController {
 		if(response != null){
 			logger.info("Record fetched successfully ::: {}", response);
 
-			return ResponseEntity.status(HttpStatus.FOUND).body(response);
+			return ResponseEntity.status(HttpStatus.OK).body(response);
 		} else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 
 	@GetMapping("/getByEmpId/{empId}")
-	public ResponseEntity<Employee> getEmployeeByEmpId(@PathVariable String empId){
+	public ResponseEntity<EmployeeDetailsDTO> getEmployeeByEmpId(@PathVariable String empId){
 		
 		logger.info("getByEmpId controller started ---------- ");
 		
-		Employee response = empService.getEmployeeByEmpId(empId);
+		EmployeeDetailsDTO response = empService.getEmployeeByEmpId(empId);
 		
 		System.out.println("Employee details :::: " + response);
 		
-		return ResponseEntity.status(HttpStatus.FOUND).body(response);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
