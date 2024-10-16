@@ -25,8 +25,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     //fetching all employee record  with department name
 
     @Query("SELECT new me.crud_backend.dto.EmployeeDetailsDTO(e.id, e.empId, e.name, e.email, e.phone, d.departmentName)" +
-            " FROM Employee e JOIN e.department d")
+            " FROM Employee e JOIN e.department d" +
+            " ORDER BY e.id ASC")
     List<EmployeeDetailsDTO> findAllEmployeeDetails();
+
 
     // fetching employee record with department name
 

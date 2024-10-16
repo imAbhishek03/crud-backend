@@ -60,6 +60,7 @@ public class CrudController {
 		List<EmployeeDetailsDTO> response = empService.getAllEmployees();
 
 		if(response != null){
+			System.out.println(response);
 			logger.info("Records fetched successfully");
 			return ResponseEntity.ok(response);
 		} else {
