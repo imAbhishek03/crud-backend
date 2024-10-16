@@ -1,5 +1,6 @@
 package me.crud_backend.service;
 
+import me.crud_backend.dto.EmployeeDetailsDTO;
 import me.crud_backend.pojo.Employee;
 
 import java.util.List;
@@ -7,16 +8,18 @@ import java.util.List;
 
 public interface EmployeeService {
 
-	Employee addEmployee(Employee employee);
+	boolean addEmployee(EmployeeDetailsDTO employee);
 
 	Employee getEmployee(Long id);
 
-	Employee getEmployeeByEmpId(String empId);
+	EmployeeDetailsDTO getEmployeeByEmpId(String empId);
+
+	EmployeeDetailsDTO getEmployeeWithDepartment(Long id);
 
 	boolean deleteEmployee(Long id);
 
-	Employee updateEmployee(Long id, Employee request);
+	boolean updateEmployee(Long id, EmployeeDetailsDTO request);
 
-	List<Employee> getAllEmployees();
+	List<EmployeeDetailsDTO> getAllEmployees();
 
 }

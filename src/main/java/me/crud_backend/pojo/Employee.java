@@ -1,13 +1,15 @@
 package me.crud_backend.pojo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Employee {
 	
 	@Id
@@ -18,5 +20,9 @@ public class Employee {
     private String name;
     private String email;
     private long phone;
-    private String address;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "dept_id", nullable = false)
+    @ToString.Exclude
+    private Department department;
 }
