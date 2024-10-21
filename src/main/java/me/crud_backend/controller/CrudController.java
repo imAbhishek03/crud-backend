@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/api/emp")
-@CrossOrigin("http://localhost:3000")
+@RequestMapping("/api/emp/")
+@CrossOrigin("http://localhost:3000/")
 @SuppressWarnings("unused")
 public class CrudController {
 	
